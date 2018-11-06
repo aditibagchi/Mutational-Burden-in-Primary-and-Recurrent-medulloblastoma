@@ -47,3 +47,6 @@ Y + scale_fill_brewer(palette = "Set1")
 ## Data visulaization total number of mutations in non-codding region primary and Recurrent medulloblastoma
 Z <- ggplot(data = Variant_Medulloblastoma_Primary_and_Recurrent, aes(Variant_Medulloblastoma_Primary_and_Recurrent$TYPE, Variant_Medulloblastoma_Primary_and_Recurrent$Intron))+geom_boxplot()+ theme_grey() + ggtitle("Mutations in  Non-Coding Region") + xlab("Medulloblastoma") + ylab("Mutations") + geom_boxplot(aes(fill = TYPE)) + scale_y_continuous(trans = log2_trans(), breaks = trans_breaks("log2", function(x) 2^x))
 Z + scale_fill_brewer(palette = "Set1")
+## Data visulaization of Non-Synonymous_Mutations of primarya and recurrent mutations.
+V <- ggplot(data = Variant_Medulloblastoma_Primary_and_Recurrent, aes(Variant_Medulloblastoma_Primary_and_Recurrent$TYPE, Variant_Medulloblastoma_Primary_and_Recurrent$`Non-Synonymous_Mutations`))+geom_boxplot()+ theme_grey() + ggtitle("Non-Synonymous_Mutations") + xlab("Medulloblastoma") + ylab("Non-Synonymous_Mutations") + geom_boxplot(aes(fill = TYPE)) + scale_y_continuous(trans = log2_trans(), breaks = trans_breaks("log2", function(x) 2^x))
+V + scale_fill_brewer(palette="Set1")
