@@ -47,3 +47,30 @@ Y + scale_fill_brewer(palette = "Set1")
 ## Data visulaization total number of mutations in non-codding region primary and Recurrent medulloblastoma
 Z <- ggplot(data = Variant_Medulloblastoma_Primary_and_Recurrent, aes(Variant_Medulloblastoma_Primary_and_Recurrent$TYPE, Variant_Medulloblastoma_Primary_and_Recurrent$Intron))+geom_boxplot()+ theme_grey() + ggtitle("Mutations in  Non-Coding Region") + xlab("Medulloblastoma") + ylab("Mutations") + geom_boxplot(aes(fill = TYPE)) + scale_y_continuous(trans = log2_trans(), breaks = trans_breaks("log2", function(x) 2^x))
 Z + scale_fill_brewer(palette = "Set1")
+
+## The sample MB_REC-06 seems erroneous due to not using the correct germline control for now remove this ccase from analysed data.
+Variant_Medulloblastoma_Primary_and_Recurrent <- Variant_Medulloblastoma_Primary_and_Recurrent[-c(1), ]
+Variant_Medulloblastoma_Primary_and_Recurrent <- Variant_Medulloblastoma_Primary_and_Recurrent[-c(40), ]
+X <- ggplot(data = Variant_Medulloblastoma_Primary_and_Recurrent, aes(Variant_Medulloblastoma_Primary_and_Recurrent$TYPE, Variant_Medulloblastoma_Primary_and_Recurrent$Total))+geom_boxplot()+ theme_light() + ggtitle("Total Variants") + xlab("Medulloblastoma") + ylab("Variants") + geom_boxplot(aes(fill = TYPE)) + scale_y_log10(breaks = trans_breaks("log10", function(x) 10^x),labels = trans_format("log10", math_format(10^.x)))
+X + scale_fill_brewer(palette = "Set1")
+Y <- ggplot(data = Variant_Medulloblastoma_Primary_and_Recurrent, aes(Variant_Medulloblastoma_Primary_and_Recurrent$TYPE, Variant_Medulloblastoma_Primary_and_Recurrent$Missense_Mutation))+geom_boxplot()+ theme_light() + ggtitle("Missense Mutations") + xlab("Medulloblastoma") + ylab("Missense Mutations") + geom_boxplot(aes(fill = TYPE)) + scale_y_log10(breaks = trans_breaks("log10", function(x) 10^x),labels = trans_format("log10", math_format(10^.x)))
+Y + scale_fill_brewer(palette = "Set1")
+Z <- ggplot(data = Variant_Medulloblastoma_Primary_and_Recurrent, aes(Variant_Medulloblastoma_Primary_and_Recurrent$TYPE, Variant_Medulloblastoma_Primary_and_Recurrent$Frameshift_Mutations))+geom_boxplot()+ theme_minimal() + ggtitle("Frame shift Mutations") + xlab("Medulloblastoma") + ylab("Mutations") + geom_boxplot(aes(fill = TYPE)) + scale_y_continuous(trans = log2_trans(), breaks = trans_breaks("log2", function(x) 2^x))
+Z + scale_fill_brewer(palette = "Set1")
+
+## Estimating the tumor mutational burden per coding region. I am considering missense, nonsense, frameshft and splice site mutations; 
+## total number of mutations was divided by 33.2 MB which is about ~ whole genome and the coding regiion based on gene idendifier used in VEP i.e CCDS.
+Medulloblastoma_Primary_and_Recurrent_Mutational_burden <- read_csv("Medulloblastoma_Primary_and_Recurrent_Mutational_burden.csv")
+G <- ggplot(Medulloblastoma_Primary_and_Recurrent_Mutational_burden, aes(Medulloblastoma_Primary_and_Recurrent_Mutational_burden$Tumor_Sample, Medulloblastoma_Primary_and_Recurrent_Mutational_burden$`TMD/MB (Coding region 33.2)`))
+G + geom_bar(stat = "identity") + scale_y_continuous(name="mutation/Mb", limits=c(0, 46))
+Recurrent_Med_Mutational_burden <- read_csv("Recurrent_Med_Mutational_burden.csv")
+G <- ggplot(Recurrent_Med_Mutational_burden, aes(Recurrent_Med_Mutational_burden$Tumor, Recurrent_Med_Mutational_burden$`Mutations/Mb`))
+G + geom_bar(stat = "identity", aes(fill = "Recurrent_Med_Mutational_burden$Tumor"))+ scale_y_continuous(name="mutation/Mb", limits=c(0, 25)) + theme_minimal() + scale_fill_brewer(palette = "Set1") + theme(axis.text.x = element_text(face = "bold", color = "black", size = 12, angle = 90))
+Hypermut_Medulloblastoma <- read_csv("Hypermut_Medulloblastoma.csv")
+G <- ggplot(Hypermut_Medulloblastoma, aes(Hypermut_Medulloblastoma$Tumor, Hypermut_Medulloblastoma$`Mutations / Mb`))
+G + geom_bar(stat = "identity", aes(fill = Hypermut_Medulloblastoma$Type), width = 0.8)+ scale_y_continuous(name="mutation/Mb", limits=c(0, 50)) + theme_minimal() + scale_fill_brewer(palette = "Set1") + theme(axis.text.x = element_text(face = "bold", color = "black", size = 12, angle = 90)) + theme(aspect.ratio = 8/1)
+G <- ggplot(Primary_Medulloblastoma, aes(Primary_Medulloblastoma$Tumor, Primary_Medulloblastoma$`Mutaion/Mb`))
+G + geom_bar(stat = "identity", aes(fill = "Primary_Medulloblastoma$Tumor"), width = 0.9)+ scale_y_continuous(name="mutation/Mb", limits=c(0, 25)) + theme_minimal() + scale_fill_brewer(palette = "Set1") + theme(axis.text.x = element_text(face = "bold", color = "black", size = 12, angle = 90)) + theme(aspect.ratio = 7/1)
+Primary_Medulloblastoma_TMD <- read_csv("Primary_Medulloblastoma_TMD.csv")
+G <- ggplot(Primary_Medulloblastoma_TMD, aes(Primary_Medulloblastoma_TMD$Tumor_Sample, Primary_Medulloblastoma_TMD$`TMD/MB (Coding region 33.2)`))
+G + geom_bar(stat = "identity", aes(fill = Primary_Medulloblastoma_TMD$TYPE))+ scale_y_continuous(name="mutation/Mb", limits=c(0, 25)) + theme_minimal() + scale_fill_brewer(palette = "Set1") + theme(axis.text.x = element_text(face = "bold", color = "black", size = 12, angle = 90)) + theme(aspect.ratio = 1/2)
