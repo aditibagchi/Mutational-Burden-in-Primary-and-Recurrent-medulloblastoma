@@ -24,8 +24,6 @@ get_tumor_ref_alt_depth=function(vcf44){
   # colnames(m)=unlist(strsplit(x$FORMAT[1],':',TRUE))
   
   # Now get the chrom & pos
-  chrpos=as.data.frame(vcf44@fix)
-  chrpos=as.data.frame(vcf44@fix, stringsAsFactors = FALSE)
  chrpos=as.data.frame(vcf44@fix, stringsAsFactors = FALSE)
   d$CHROM=chrpos$CHROM
   d$POS=chrpos$POS
